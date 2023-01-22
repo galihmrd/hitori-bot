@@ -74,17 +74,13 @@ class HitoriBotHandler(FileSystemEventHandler):
                     sleep(1)
 
     def on_any_event(self, event: FileClosedEvent | FileModifiedEvent):
-        if ((
-            os.name != 'nt' and isinstance(
-                event,
-                FileClosedEvent
-            )) or (
-                os.name == 'nt' and isinstance(event, FileModifiedEvent))
-            ) and not event.is_directory and not (
-            re.match(
-                r'.*\.py$',
-                event.src_path
-            ) is None
+        if (
+            (
+                (os.name != 'nt' and isinstance(event, FileClosedEvent))
+                or (os.name == 'nt' and isinstance(event, FileModifiedEvent))
+            )
+            and not event.is_directory
+            and re.match(r'.*\.py$', event.src_path) is not None
         ):
             self.n_skip += 1
             if self.n_skip >= self.skip:
@@ -139,7 +135,7 @@ if __name__ == "__main__":
                 observer.stop()
                 observer.join()
         else:
-            os.system(sys.executable + ' ' + HitoriBotHandler.main)
+            os.system(f'{sys.executable} {HitoriBotHandler.main}')
     elif parse.action == "set":
         config = json.load(open('./config.json'))
         if parse.config.__len__() < 1:
