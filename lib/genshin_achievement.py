@@ -46,7 +46,7 @@ def genshin_achievement(text: str) -> typing.Union[None, Image.Image]:
     space = (f'"{s}"'[:25]).rfind(' ')
     lines = [
         f'"{s[:space if space != -1 else 24] + ("" if space != -1 else "-")}',
-        f'{s[space if space != -1 else 24:]}' + '"'
+        f'{s[space if space != -1 else 24:]}"',
     ]
 
     # Split text into two lines if necessary

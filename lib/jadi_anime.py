@@ -34,13 +34,12 @@ class AnimeConverter:
         """
         if ';base64,' in url or self.is_base64(url):
             return url.split(';base64,')[1] if ';base64,' in url else url
+        if 'http' in url:
+            image = base64.b64encode(requests.get(url).content).decode()
         else:
-            if 'http' in url:
-                image = base64.b64encode(requests.get(url).content).decode()
-            else:
-                with open(url, 'rb') as f:
-                    image = base64.b64encode(f.read()).decode()
-            return image
+            with open(url, 'rb') as f:
+                image = base64.b64encode(f.read()).decode()
+        return image
 
     def convert(self, string: str) -> int:
         """Get the number of special characters in the given string
@@ -84,9 +83,7 @@ class AnimeConverter:
 
         if proxy and (proxy.startswith('https://') or proxy.startswith('socks5://')):
             pass
-        elif proxy is None:
-            pass
-        else:
+        elif proxy is not None:
             raise ValueError('Proxy must be a string or None, like "https://" or "socks5://"')
 
         img_data = self.base64_encode(img)
@@ -119,7 +116,7 @@ class AnimeConverter:
             raise e
 
         if response.status_code != 200:
-            raise ValueError("Failed to convert image: " + response.text)
+            raise ValueError(f"Failed to convert image: {response.text}")
 
         data = json.loads(response.text)
 

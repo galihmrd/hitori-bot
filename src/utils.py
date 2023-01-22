@@ -24,7 +24,5 @@ def h2k(num: int):
     i = int(math.floor(math.log(num, 1000)))
     p = math.pow(1000, i)
     s = round(num / p, 2)
-    anu = "%s %s" % (s, size_name[i])
-    if anu.strip().endswith('.0'):
-        return anu.strip()[:-2]
-    return anu.strip()
+    anu = f"{s} {size_name[i]}"
+    return anu.strip()[:-2] if anu.strip().endswith('.0') else anu.strip()

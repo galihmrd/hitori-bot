@@ -31,13 +31,13 @@ class Styling:
         self.color = color
 
     def box_bracket(self, text: str):
-        return self.color + '[' + text + self.color + ']' + Fore.RESET
+        return f'{self.color}[{text}{self.color}]{Fore.RESET}'
 
     def curly_bracket(self, text: str):
         return self.color + '{' + text + self.color + '}' + Fore.RESET
 
     def round_bracket(self, text: str):
-        return self.color + '(' + text + self.color + ')' + Fore.RESET
+        return f'{self.color}({text}{self.color}){Fore.RESET}'
 
     def icon(self, hex: int) -> str:
         return self.text(chr(hex))
